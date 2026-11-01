@@ -1,17 +1,21 @@
+
 name: Validate and deploy Pages
 on:
   push:
     branches: [main]
   workflow_dispatch:
+
 permissions:
   contents: read
   pages: write
   id-token: write
+
 concurrency:
   group: pages
   cancel-in-progress: false
+
 jobs:
-   build:
+  build:
     runs-on: ubuntu-latest
     env:
       STORY_FILE: stories/oombam/story.json
@@ -32,6 +36,7 @@ jobs:
       - uses: actions/upload-pages-artifact@v4
         with:
           path: dist
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
