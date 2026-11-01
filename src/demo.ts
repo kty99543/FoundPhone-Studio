@@ -1,5 +1,6 @@
 import { makeItem, uid, type Work } from "./schema";
 import { registry } from "./registry";
+import { demoPhotos } from "./demo-photos";
 export function createWork(title = "雨停之前"): Work {
   const w: Work = {
     formatVersion: 1,
@@ -142,6 +143,17 @@ export function createWork(title = "雨停之前"): Work {
       kind: "image",
     }),
   ];
+  // 默认手机相册：追加用户上传的示例照片（见 demo-photos.ts）。
+  for (const p of demoPhotos)
+    w.data.photos.push(
+      makeItem({
+        id: p.id,
+        title: p.title,
+        body: "",
+        kind: "image",
+        media: p.media,
+      }),
+    );
   w.data.instagram = [
     makeItem({
       id: "ig1",

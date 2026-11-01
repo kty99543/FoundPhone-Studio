@@ -89,20 +89,34 @@ function MessageList({
   onItem,
   onRead,
   whatsapp = false,
+  reveal = true,
 }: {
   items: Item[];
   creator: boolean;
   onItem: (i: Item) => void;
   onRead: (id: string) => void;
   whatsapp?: boolean;
+  reveal?: boolean;
 }) {
+  // 非编辑模式下，消息按时间顺序逐条淡入，像收到消息一样一条条弹出来。
+  const animate = reveal && !creator;
+  // 每条消息之间的间隔（秒），以及最长延迟上限，避免长聊天等太久。
+  const STEP = 0.12;
+  const CAP = 30;
   return (
     <div className={`skin-messages ${whatsapp ? "wa-wallpaper" : ""}`}>
       <div className="skin-date">{items[0]?.time.slice(0, 10)}</div>
-      {items.map((i) => (
+      {items.map((i, idx) => (
         <div
           key={i.id}
-          className={`skin-message ${i.outgoing ? "outgoing" : ""}`}
+          className={`skin-message ${i.outgoing ? "outgoing" : ""}${
+            animate ? " skin-message--reveal" : ""
+          }`}
+          style={
+            animate
+              ? { animationDelay: `${Math.min(idx, CAP) * STEP}s` }
+              : undefined
+          }
         >
           {!whatsapp && !i.outgoing && (
             <Avatar name={i.sender} src={i.avatar} />
