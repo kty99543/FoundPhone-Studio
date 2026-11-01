@@ -11,8 +11,10 @@ concurrency:
   group: pages
   cancel-in-progress: false
 jobs:
-  build:
+   build:
     runs-on: ubuntu-latest
+    env:
+      STORY_FILE: stories/oombam/story.json
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
